@@ -18,20 +18,21 @@ setnote({...note,[e.target.name]: e.target.value})
     <div >
     <h1>Add A Note</h1>
     <div className="container">
-    <form>
-  <div className="mb-8 mx-8">
+    <form >
+  <div className="mb-8 mx-8 ">
     <label htmlFor="exampleInputEmail1" className="form-label">Title</label>
     <input type="text" className="form-control" id="title" name='title' aria-describedby="emailHelp"  onChange={onchange}/>
   
   </div>
-  <div className="mb-3">
+  <div className="mb-3 ">
     <label htmlFor="description" className="form-label">description</label>
-    <input type="text" className="form-control" id="description" name='description' onChange={onchange} />
+    <input type="text" className="form-control" id="description" name='description' onChange={onchange}  />
+  </div> 
+   <div className="mb-3 ">
+    <label htmlFor="tag" className="form-label">Tag</label>
+    <input type="text" className="form-control" id="tag" name='tag' onChange={onchange}  />
   </div>
-  <div className="mb-3 form-check">
-    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-    {/* <label className="form-check-label" for="exampleCheck1">Check me out</label> */}
-  </div>
+
   <button type="submit" className="btn btn-primary" onClick={handleclick}>AddNote</button>
 </form>
       
