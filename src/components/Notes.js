@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef,useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import Noteitem from "./Noteitem";
 import Addnote from "./Addnote";
@@ -6,27 +6,35 @@ import { redirect } from "react-router-dom";
 // import Notes from './Notes';
 const Notes = () => {
   const context = useContext(noteContext);
-  const { notes, getNote } = context;
+  const { notes, getNote,editNote } = context;
   useEffect(() => {
     getNote();
   }, []);
   const ref = useRef(null);
-  const  [note, setnote] = useState({etitle: "",edescription:"",etag: ""})
+  const refclose = useRef(null);
+  const [note, setnote] = useState({
+    id: "",
+    etitle: "",
+    edescription: "",
+    etag: "",
+  });
   const updateNote = (currentnote) => {
     ref.current.click();
-    setnote({etitle: currentnote.title,edescription: currentnote.description,etag:currentnote.tag})
-
-
+    setnote({
+      id: currentnote._id,
+      etitle: currentnote.title,
+      edescription: currentnote.description,
+      etag: currentnote.tag,
+    });
   };
-  const handleclick=(e)=>{
-    console.log("updting the note",note)
-    e.preventDefault()
-
-
-  }
-  const onchange=(e)=>{
-setnote({...note,[e.target.name]: e.target.value})
-  }
+  const handleclick = (e) => {
+    console.log("updting the note", note);
+    editNote(note.id,note.edescription,note.etitle,note.etag)
+    refclose.current.click();
+  };
+  const onchange = (e) => {
+    setnote({ ...note, [e.target.name]: e.target.value });
+  };
 
   return (
     <>
@@ -53,7 +61,7 @@ setnote({...note,[e.target.name]: e.target.value})
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-              Edit Note
+                Edit Note
               </h5>
               <button
                 type="button"
@@ -63,33 +71,64 @@ setnote({...note,[e.target.name]: e.target.value})
               ></button>
             </div>
             <div className="modal-body">
-            <form >
-  <div className="mb-8 mx-8 ">
-    <label htmlFor="exampleInputEmail1" className="form-label">Title</label>
-    <input type="text" className="form-control" id="etitle" value={note.etitle} name='etitle' aria-describedby="emailHelp"  onChange={onchange}/>
-  
-  </div>
-  <div className="mb-3 ">
-    <label htmlFor="edescription"  className="form-label">description</label>
-    <input type="text" className="form-control"  value={note.edescription}id="edescription" name='edescription' onChange={onchange}  />
-  </div> 
-   <div className="mb-3 ">
-    <label htmlFor="etag" className="form-label">Tag</label>
-    <input type="text" className="form-control" value={note.etag} id="etag" name='etag' onChange={onchange}  />
-  </div>
-
-</form>
+              <form>
+                <div className="mb-8 mx-8 ">
+                  <label htmlFor="exampleInputEmail1" className="form-label">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="etitle"
+                    value={note.etitle}
+                    name="etitle"
+                    aria-describedby="emailHelp"
+                    onChange={onchange}
+                  />
+                </div>
+                <div className="mb-3 ">
+                  <label htmlFor="edescription" className="form-label">
+                    description
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={note.edescription}
+                    id="edescription"
+                    name="edescription"
+                    onChange={onchange}
+                  />
+                </div>
+                <div className="mb-3 ">
+                  <label htmlFor="etag" className="form-label">
+                    Tag
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={note.etag}
+                    id="etag"
+                    name="etag"
+                    onChange={onchange}
+                  />
+                </div>
+              </form>
             </div>
             <div className="modal-footer">
               <button
+                ref={refclose}
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleclick}>
-             Update Note
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleclick}
+              >
+                Update Note
               </button>
             </div>
           </div>
