@@ -18,7 +18,10 @@ router.post(
       "Atleast 5 char of leanth of apssword is required"
     ).isLength({ min: 5 }),
   ],
+
+  
   async (req, res) => {
+    let success=false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -30,7 +33,7 @@ router.post(
       if (user) {
         return res
           .status(400)
-          .json({ error: "Sorry thre user already exist with already exist" });
+          .json({success, error: "Sorry thre user already exist with already exist" });
       }
       const salt = await bcrypt.genSalt(10);
       const secpass = await bcrypt.hash(req.body.password, salt);
@@ -50,7 +53,8 @@ router.post(
       // req.send(req.body);
       console.log(jwtdata);
       // res.json(user);
-      res.json({ jwtdata });
+      success=true
+      res.json({success, jwtdata });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("some error occured ");
