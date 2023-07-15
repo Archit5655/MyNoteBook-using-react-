@@ -4,7 +4,7 @@ import Noteitem from "./Noteitem";
 import Addnote from "./Addnote";
 import { redirect } from "react-router-dom";
 // import Notes from './Notes';
-const Notes = () => {
+const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNote,editNote } = context;
   useEffect(() => {
@@ -26,11 +26,13 @@ const Notes = () => {
       edescription: currentnote.description,
       etag: currentnote.tag,
     });
+   
   };
   const handleclick = (e) => {
     console.log("updting the note", note);
     editNote(note.id,note.edescription,note.etitle,note.etag)
     refclose.current.click();
+    props.showAlert("Updated Successfully","success")
   };
   const onchange = (e) => {
     setnote({ ...note, [e.target.name]: e.target.value });
@@ -38,7 +40,7 @@ const Notes = () => {
 
   return (
     <>
-      <Addnote />
+      <Addnote showAlert={props.showAlert}/>
 
       <button
         ref={ref}
@@ -138,7 +140,7 @@ const Notes = () => {
       <div className="row my-3">
         <h1>Your Notes</h1>
         {notes.map((notes) => {
-          return <Noteitem notes={notes} updateNote={updateNote} />;
+          return <Noteitem notes={notes} showAlert={props.showAlert} updateNote={updateNote} />;
         })}
       </div>
     </>

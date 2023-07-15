@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
-const Signup = () => {
+const Signup = (props) => {
     let history=useNavigate()
     const [credentials, setcredentials] = useState({ name:"",email: "", password: "" ,cpassword:""});
     const handleSumbit = async (e) => {
@@ -22,9 +22,10 @@ const Signup = () => {
 
             localStorage.setItem('token',json.jwtdata)
             history("/home")
+            props.showAlert("Accout created Successfullly","success")
         }
         else{
-            alert("isssue")
+           props.showAlert("Invalid Credentials","danger")
 
         }
 
